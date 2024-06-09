@@ -1,5 +1,7 @@
 package io.sanchit.socialbook.user;
 
+import io.sanchit.socialbook.book.Book;
+import io.sanchit.socialbook.history.BookTransactionHistory;
 import io.sanchit.socialbook.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,12 +32,13 @@ public class User implements Principal, UserDetails {
     @Id
     @GeneratedValue
     private Integer id;
-
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
+
     @Column(unique = true)
     private String email;
+    
     private String password;
     private boolean accountLocked;
     private boolean enabled;
@@ -43,6 +46,11 @@ public class User implements Principal, UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
+    @OneToMany(mappedBy = "owner")
+    private List<Book> books;
+
+    @OneToMany(mappedBy = "user")
+    private List<BookTransactionHistory> bookTransactionHistories;
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
