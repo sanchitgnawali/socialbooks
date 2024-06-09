@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Social Books Email Activation</title>
+</head>
+<body>
+
+<div class="container">
+    <h1>Activate Your Account.</h1>
+
+    <p th:text="'Hello ' + ${username} + ',' "></p>
+    <p>Welcome to the social books. Please use the activation code below to activate your account.</p>
+
+    <div class="activation-code">
+        <span th:text="${activationCode}"></span>
+    </div>
+
+    <div class="activation-url">
+        <a th:href="${confirmationUrl}">Activate your account</a>
+    </div>
+</div>
+
+</body>
+</html>
