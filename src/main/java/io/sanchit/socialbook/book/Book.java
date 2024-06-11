@@ -22,20 +22,31 @@ import java.util.List;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Book extends BaseEntity {
+    @OneToMany(mappedBy = "book")
+    List<BookTransactionHistory> bookTransactionHistories;
     private String authorName;
     private String title;
     private String isbn;
     private String synopses;
     private boolean archived;
     private boolean sharable;
-
     @ManyToOne
     @JoinColumn(name = "ownerId")
     private User owner;
-
     @OneToMany(mappedBy = "book")
     private List<Feedback> feedbacks;
 
-    @OneToMany(mappedBy = "book")
-    List<BookTransactionHistory> bookTransactionHistories;
+    @Transient
+    public double getRate() {
+        if (feedbacks == null || feedbacks.isEmpty()) {
+            return 0.0;
+        }
+
+        var rate = feedbacks.stream()
+                .mapToDouble(Feedback::getNote)
+                .average()
+                .orElse(0.0);
+
+        return Math.round(rate * 10.0) / 10.0;
+    }
 }
