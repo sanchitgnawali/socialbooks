@@ -1,12 +1,14 @@
 package io.sanchit.socialbook.book;
 
 import io.sanchit.socialbook.book.common.PageResponse;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("books")
@@ -77,5 +79,50 @@ public class BookController {
             Authentication authentication) {
 
         return ResponseEntity.ok(bookService.updateBookSharable(bookId, authentication));
+    }
+
+    @PatchMapping("archived/{book-id}")
+    public ResponseEntity<Integer> updateArchive(
+            @PathVariable("book-id") Integer bookId,
+            Authentication authentication) {
+
+        return ResponseEntity.ok(bookService.updateArchivedStatus(bookId, authentication));
+    }
+
+    @PatchMapping("borrow/{book-id}")
+    public ResponseEntity<Integer> borrowBook(
+            @PathVariable("book-id") Integer bookId,
+            Authentication authentication) {
+
+        return ResponseEntity.ok(bookService.borrowBook(bookId, authentication));
+    }
+
+    @PatchMapping("borrow/return/{book-id}")
+    public ResponseEntity<Integer> returnBorrowedBook(
+            @PathVariable("book-id") Integer bookId,
+            Authentication authentication) {
+
+        return ResponseEntity.ok(bookService.returnBorrowedBook(bookId, authentication));
+    }
+
+    @PatchMapping("borrow/return/approve/{book-id}")
+    public ResponseEntity<Integer> returnApproveBorrowedBook(
+            @PathVariable("book-id") Integer bookId,
+            Authentication authentication) {
+
+        return ResponseEntity.ok(bookService.returnApproveBorrowedBook(bookId, authentication));
+    }
+
+    @PostMapping(value = "/cover/{book-id}", consumes = "multipart/form-data")
+    public ResponseEntity<?> uploadBookCover(
+            @PathVariable("book-id") Integer bookId,
+            @Parameter()
+            @PathVariable("file") MultipartFile file,
+            Authentication authentication
+    ) {
+
+        bookService.uploadBookCover(bookId, file, authentication);
+
+        return ResponseEntity.accepted().build();
     }
 }

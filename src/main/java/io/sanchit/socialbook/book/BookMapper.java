@@ -1,5 +1,6 @@
 package io.sanchit.socialbook.book;
 
+import io.sanchit.socialbook.file.FileUtils;
 import io.sanchit.socialbook.history.BookTransactionHistory;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,7 @@ public class BookMapper {
                 .sharable(book.isSharable())
                 .rate(book.getRate())
                 .owner(book.getOwner().getFullName())
+                .cover(FileUtils.readFileFromLocation(book.getBookCover()))
                 .build();
     }
 

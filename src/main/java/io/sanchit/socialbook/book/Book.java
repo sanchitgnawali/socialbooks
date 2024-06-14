@@ -28,6 +28,7 @@ public class Book extends BaseEntity {
     private String title;
     private String isbn;
     private String synopses;
+    private String bookCover;
     private boolean archived;
     private boolean sharable;
     @ManyToOne
